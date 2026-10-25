@@ -40,7 +40,7 @@
   }
 
   async function render(el, ctx) {
-    const token = V.mount(el, `<div class="page-head"><div><h1>Mes documents</h1><p>Ton coffre privé : les autres profils ne peuvent pas lire ces fichiers (10 Mo max chacun).</p></div></div>
+    const token = V.mount(el, `<div class="page-head"><div><h1>Mes documents</h1><p>Rangés dans ce navigateur, pour ce profil uniquement : rien n’est envoyé sur Internet (10 Mo max par fichier).</p></div></div>
       <label class="dropzone" id="drop">${icon('upload')}<div><b>Dépose tes fichiers ici</b> ou clique pour choisir</div><div class="small">CSV Revolut, export Boursobank, PDF, images…</div><input type="file" multiple hidden></label>
       <div id="doc-msg" class="mt"></div><div class="card mt" id="docs"><div class="empty">Chargement…</div></div>${V.DISCLAIMER}`);
     const drop = el.querySelector('#drop');

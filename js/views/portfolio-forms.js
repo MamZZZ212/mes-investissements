@@ -132,8 +132,8 @@
       const file = e.target.files[0];
       if (!file) return;
       analyse(await file.text());
-      // En ligne : le relevé est aussi rangé dans le coffre « Documents » du profil.
-      if (root.CloudConfig?.enabled) DocumentVault.upload(file).then(() => App.toast('Relevé rangé dans tes documents.')).catch((err) => console.error('Archivage du relevé impossible', err));
+      // Le relevé est aussi rangé dans le coffre « Documents » du profil.
+      DocumentVault.upload(file).then(() => App.toast('Relevé rangé dans tes documents.')).catch((err) => console.error('Archivage du relevé impossible', err));
     });
     d.querySelector('#analyse').addEventListener('click', () => analyse(d.querySelector('#pasted').value));
     if (preset.text) analyse(preset.text);

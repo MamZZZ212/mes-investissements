@@ -4,3 +4,4 @@ __pycache__/
 supabase/.temp/
 supabase/.branches/
 .env
+data/

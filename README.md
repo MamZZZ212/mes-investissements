@@ -49,22 +49,15 @@ Outil pédagogique d'aide à la décision : il applique les règles que tu chois
 
 ## Version en ligne (téléphone, proches)
 
-Adresse : **https://mamzzz212.github.io/mes-investissements/**
+Adresse : **https://mamzzz212.github.io/mes-investissements/** (comme fit-tracker, via GitHub Pages).
 
-- Hébergement de l'interface : GitHub Pages (code public, aucune donnée personnelle dedans).
-- Comptes, portefeuilles et documents : Supabase (projet `mes-investissements`, région Europe). Chaque profil ne voit que ses propres données (Row Level Security, voir `supabase/schema.sql`).
-- Cours de bourse : fonction Supabase `market` (`supabase/functions/market/index.ts`), réservée aux profils connectés.
-- **Inscription sur invitation** : le premier compte créé est administrateur. Menu **Administration** → « Créer une invitation » → le lien est copié, envoie-le. Chaque code ne sert qu'une fois.
-- **Documents** : coffre privé par profil (10 Mo max par fichier). Les CSV peuvent être importés dans le portefeuille en un clic.
-- Le lien avec Mon Budget ne fonctionne que depuis ton PC (là où Mon Budget tourne). Sur téléphone, saisis le montant mensuel dans Plan mensuel.
-- Mot de passe oublié : la récupération par e-mail n'est pas configurée (le service e-mail gratuit de Supabase est limité). L'administrateur peut réinitialiser un compte depuis la console Supabase → Authentication → Users.
+- **Aucun compte** : chacun ouvre le lien sur son téléphone. Les données (portefeuille, stratégie, documents) restent **dans le navigateur de l'appareil** ; rien n'est envoyé sur Internet.
+- **Profils** : bouton du profil en bas de la barre latérale → créer, renommer, supprimer ou changer de profil (utile si plusieurs personnes partagent un appareil).
+- **Documents** : relevés, PDF, images… rangés dans le navigateur pour le profil actif (10 Mo max par fichier). Les CSV s'importent en un clic.
+- **Passer du PC au téléphone** : Réglages → « Télécharger une sauvegarde » sur un appareil, puis « Restaurer » sur l'autre.
+- **Cours** : une tâche GitHub Actions (`.github/workflows/pages.yml`) les récupère toutes les ~20 min en semaine (une fois par jour le week-end), fondamentaux une fois par jour, puis republie le site. Seuls les titres de `market-symbols.json` (~100 ETF et actions) sont couverts en ligne : ajoute un symbole Yahoo Finance dans ce fichier pour le suivre. La version PC, elle, accède à tous les titres en direct.
+- Le lien budget ne fonctionne que sur le PC où Mon Budget tourne.
 
-La version locale (`Ouvrir-Investissements.bat`, http://localhost:5179) continue de fonctionner hors ligne, sans compte, avec les données du navigateur du PC.
+### Mettre à jour le site
 
-### Mise à jour du site en ligne
-
-Toute modification poussée sur la branche `main` du dépôt GitHub est publiée automatiquement par GitHub Pages en une minute environ. Après une modification de `supabase/functions/market`, redéployer :
-
-```bash
-npx supabase functions deploy market --project-ref <référence du projet>
-```
+Pousser sur la branche `main` republie le site en 1 à 2 minutes. Pour forcer une mise à jour des cours : onglet **Actions** du dépôt → « Publier le site » → **Run workflow**.

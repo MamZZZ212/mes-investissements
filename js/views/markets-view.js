@@ -59,7 +59,7 @@
 
   async function render(el, ctx) {
     const state = ctx.state;
-    const token = V.mount(el, `<div class="page-head"><div><h1>Marchés</h1><p>Cours en direct (différés jusqu’à 15 min selon la place) de ta liste de suivi.</p></div></div>
+    const token = V.mount(el, `<div class="page-head"><div><h1>Marchés</h1><p>${MarketApi.live ? 'Cours en direct (différés jusqu’à 15 min selon la place)' : 'Cours mis à jour toutes les ~20 min en semaine'} pour ta liste de suivi.</p></div></div>
       <div class="tabs" role="tablist"><button role="tab" data-tab="watch" aria-selected="${tab === 'watch'}">Liste de suivi</button><button role="tab" data-tab="etf" aria-selected="${tab === 'etf'}">ETF PEA & placements sûrs</button></div>
       ${tab === 'watch' ? `<div class="card" style="position:relative"><label class="field">Ajouter un titre à suivre<input type="search" id="add-q" placeholder="Nom, ticker ou ISIN — ex. Nvidia, Air Liquide, IE00B4L5Y983" autocomplete="off"></label><div id="add-results" class="search-results mt" hidden></div></div>` : ''}
       <div id="mk"><div class="empty">Chargement des cours…</div></div>${V.DISCLAIMER}`);

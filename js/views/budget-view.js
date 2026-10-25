@@ -40,7 +40,7 @@
         el.querySelector('#bfig').innerHTML = figures(b, state, Strategy.emergencyTarget(state.strategy, b));
       } else {
         st.className = 'notice';
-        st.innerHTML = live ? 'Mon Budget est lancé mais ne contient pas encore de relevé.' : (root.CloudConfig?.enabled ? 'Mon Budget ne répond pas. Le lien budget ne marche que depuis le PC où Mon Budget tourne (démarrage automatique) ; sur téléphone, saisis ton montant mensuel dans Plan mensuel.' : 'Mon Budget ne répond pas. Lance « Ouvrir-Investissements.bat » (il démarre les deux applis) ou « Ouvrir-Mon-Budget.bat », puis clique sur Synchroniser.');
+        st.innerHTML = live ? 'Mon Budget est lancé mais ne contient pas encore de relevé.' : (!MarketApi.live ? 'Mon Budget ne répond pas. Le lien budget ne marche que depuis le PC où Mon Budget tourne (démarrage automatique) ; sur téléphone, saisis ton montant mensuel dans Plan mensuel.' : 'Mon Budget ne répond pas. Lance « Ouvrir-Investissements.bat » (il démarre les deux applis) ou « Ouvrir-Mon-Budget.bat », puis clique sur Synchroniser.');
       }
     };
     const sync = async () => { const b = await BudgetLink.sync(); paint(b ? { ...b, syncedAt: Date.now() } : state.budget, !!b); };

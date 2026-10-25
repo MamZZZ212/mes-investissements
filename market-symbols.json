@@ -1,0 +1,17 @@
+{
+  "_note": "Titres dont les cours sont publiés sur la version en ligne (GitHub Pages). Ajoute un symbole Yahoo Finance ici pour le suivre en ligne.",
+  "etf": [
+    "DCAM.PA", "WPEA.PA", "CW8.PA", "ESE.PA", "PSP5.PA", "PCEU.PA", "ETZ.PA", "PAEEM.PA", "PUST.PA", "CAC.PA",
+    "IWDA.AS", "VWCE.DE", "XEON.DE", "SPY", "QQQ", "VOO", "VT"
+  ],
+  "stocks": [
+    "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA", "BRK-B", "V", "MA", "KO", "PG", "JNJ", "COST", "AXP", "MCO",
+    "ADBE", "TXN", "PEP", "AVGO", "AMD", "NFLX", "ORCL", "CRM", "JPM", "UNH", "LLY", "WMT", "HD", "DIS", "PLTR",
+    "AC.PA", "AI.PA", "AIR.PA", "MT.AS", "CS.PA", "BNP.PA", "EN.PA", "CAP.PA", "CA.PA", "ACA.PA", "BN.PA", "DSY.PA",
+    "ENGI.PA", "EL.PA", "ERF.PA", "RMS.PA", "KER.PA", "OR.PA", "LR.PA", "MC.PA", "ML.PA", "ORA.PA", "RI.PA", "PUB.PA",
+    "RNO.PA", "SAF.PA", "SGO.PA", "SAN.PA", "SU.PA", "GLE.PA", "STLAP.PA", "STMPA.PA", "TEP.PA", "HO.PA", "TTE.PA",
+    "VIE.PA", "DG.PA", "ASML.AS", "SAP.DE", "SIE.DE", "ALV.DE", "ADYEN.AS", "RACE.MI", "ITX.MC", "NOVO-B.CO", "NESN.SW"
+  ],
+  "indices": ["^FCHI", "^GSPC", "^IXIC", "^STOXX50E"],
+  "fx": ["USDEUR=X", "GBPEUR=X", "CHFEUR=X", "DKKEUR=X", "SEKEUR=X", "NOKEUR=X", "JPYEUR=X", "CADEUR=X"]
+}

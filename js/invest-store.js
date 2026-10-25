@@ -1,11 +1,10 @@
 /* État de l'application : positions, liste de suivi, stratégie, analyses, dernier résumé budget.
-   Persisté dans le navigateur (localStorage) en mode local, ou dans le profil Supabase en mode en ligne. */
+   Persisté dans le navigateur (localStorage), une entrée par profil (voir ProfileRegistry). */
 (function (root) {
-  const STORE_KEY = 'invest.v1';
   const clone = (o) => JSON.parse(JSON.stringify(o));
   const listeners = [];
   let state = null;
-  let remoteSave = null;  // en ligne : sauvegarde dans le profil Supabase au lieu du navigateur
+  const storeKey = () => root.ProfileRegistry.storeKey();
 
   const DEFAULT_RULES = {
     emergencyMonths: 4, maxLinePct: 5, rebalanceBand: 5, horizonYears: 5,
@@ -40,22 +39,16 @@
     };
   }
 
-  /* initial : état du profil en ligne (ou null pour un nouveau profil) ; sans argument, lecture du navigateur. */
-  function load(initial) {
-    if (initial !== undefined) {
-      state = initial ? normalize(initial) : freshState();
-      return state;
-    }
+  function load() {
     try {
-      const saved = JSON.parse(localStorage.getItem(STORE_KEY));
+      const saved = JSON.parse(localStorage.getItem(storeKey()));
       state = saved ? normalize(saved) : freshState();
     } catch (e) { state = freshState(); }
     return state;
   }
 
   function persist() {
-    if (remoteSave) { remoteSave(state); return; }
-    try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) { /* mode privé */ }
+    try { localStorage.setItem(storeKey(), JSON.stringify(state)); } catch (e) { /* mode privé */ }
   }
 
   function save(silent) {
@@ -67,7 +60,6 @@
 
   const Store = {
     load,
-    useRemote(fn) { remoteSave = fn; },
     get: () => state,
     subscribe: (fn) => listeners.push(fn),
     DEFAULT_RULES,

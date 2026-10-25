@@ -13,16 +13,17 @@
 
   function render(el, ctx) {
     const s = ctx.state;
-    V.mount(el, `<div class="page-head"><div><h1>Réglages</h1><p>${root.CloudConfig?.enabled ? 'Tes données sont enregistrées dans ton profil en ligne (Supabase, Europe). Pour reprendre les données de la version PC : télécharge une sauvegarde sur la version PC, puis « Restaurer » ici.' : 'Tes données restent dans ce navigateur : pense à faire une sauvegarde de temps en temps.'}</p></div></div>
+    V.mount(el, `<div class="page-head"><div><h1>Réglages</h1><p>Les données du profil « ${V.esc(ProfileRegistry.active().name)} » restent dans ce navigateur. Pour les retrouver sur un autre appareil (téléphone ↔ PC) : « Télécharger une sauvegarde » ici, puis « Restaurer » là-bas.</p></div></div>
       <div class="grid two">
         <div class="card"><h2>Sauvegarde</h2><p class="small">${s.holdings.length} position(s), ${s.watchlist.length} titre(s) suivi(s), ${Object.keys(s.scores).length} analyse(s).</p>
           <div class="row mt"><button class="btn primary" id="export">Télécharger une sauvegarde</button>
           <label class="btn">Restaurer…<input type="file" id="import" accept=".json,application/json" hidden></label></div>
           <div class="row mt"><button class="btn danger" id="reset">Tout effacer</button></div></div>
         <div class="card"><h2>Sources et limites</h2><ul class="small" style="padding-left:18px;line-height:1.7;margin:8px 0 0">
-          <li>Cours, historiques et recherche : Yahoo Finance, via ${root.CloudConfig?.enabled ? 'le relais en ligne réservé aux profils connectés' : 'le serveur local'} (cache 1 min). Cotations parfois différées de 15 min.</li>
+          <li>Cours, historiques et recherche : Yahoo Finance, ${MarketApi.live ? 'en direct via le serveur local (cache 1 min)' : 'mises à jour toutes les ~20 min en semaine sur la version en ligne'}. Cotations parfois différées de 15 min.</li>
           <li>Fondamentaux : séries annuelles publiques Yahoo Finance (4 à 5 derniers exercices), mises en cache 12 h.</li>
           <li>Revolut et Boursobank : pas d’API publique pour les comptes-titres de particuliers → saisie manuelle ou import CSV.</li>
+          <li>Version en ligne : seuls les titres listés dans market-symbols.json (≈ 100 ETF et actions) ont des cours ; la version PC accède à tous les titres.</li>
           <li>Budget : lu depuis l’appli Mon Budget (localhost:5178) par une passerelle locale, rien ne sort de ton ordinateur.</li>
           <li>Aucun ordre de bourse n’est passé par l’application : tu restes seul décisionnaire.</li></ul></div>
       </div>${V.DISCLAIMER}`);

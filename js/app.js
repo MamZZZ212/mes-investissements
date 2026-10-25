@@ -1,6 +1,6 @@
 /* Point d'entrée : navigation par onglets (hash, avec #titre/SYMBOLE pour les fiches), thème,
    état du marché, rafraîchissement automatique des cours et synchronisation du budget au démarrage.
-   En ligne : connexion obligatoire, portefeuille chargé depuis le profil, menus Documents et Administration. */
+   Plusieurs profils par appareil (sélecteur dans la barre latérale), chacun avec ses données et documents. */
 (function (root) {
   const BASE_VIEWS = [
     { id: 'tableau', label: 'Tableau de bord', icon: 'home', view: () => root.DashboardView },
@@ -11,11 +11,12 @@
     { id: 'plan', label: 'Plan mensuel', icon: 'calendar', view: () => root.PlanView },
     { id: 'budget', label: 'Lien budget', icon: 'link', view: () => root.BudgetView },
   ];
-  const CLOUD_VIEWS = [{ id: 'documents', label: 'Documents', icon: 'file', view: () => root.DocumentsView }];
-  const ADMIN_VIEWS = [{ id: 'admin', label: 'Administration', icon: 'shield', view: () => root.AdminView }];
-  const SETTINGS_VIEW = { id: 'reglages', label: 'Réglages', icon: 'settings', view: () => root.SettingsView };
+  const VIEWS = [
+    ...BASE_VIEWS,
+    { id: 'documents', label: 'Documents', icon: 'file', view: () => root.DocumentsView },
+    { id: 'reglages', label: 'Réglages', icon: 'settings', view: () => root.SettingsView },
+  ];
   const REFRESH_MS = 60 * 1000;
-  let VIEWS = [...BASE_VIEWS, SETTINGS_VIEW];
   let toastTimer = null;
 
   function route() {
@@ -49,7 +50,8 @@
   function paintStatus(s) {
     const box = document.getElementById('market-status');
     if (s.live === null) return;
-    box.innerHTML = s.live ? '<span class="dot live"></span>Cours en direct' : '<span class="dot off"></span>Service de cours injoignable';
+    if (!s.live) { box.innerHTML = '<span class="dot off"></span>Cours injoignables'; return; }
+    box.innerHTML = s.dataTime ? `<span class="dot live"></span>Cours du ${Money.time(s.dataTime)}` : '<span class="dot live"></span>Cours en direct';
   }
 
   function initTheme() {
@@ -66,22 +68,12 @@
     });
   }
 
-  /* Mode en ligne : session Supabase, sinon écran de connexion. Renvoie false si l'utilisateur doit se connecter. */
-  async function startCloud() {
-    const user = await root.CloudSession.init();
-    if (!user) {
-      document.querySelector('.shell').hidden = true;
-      root.AuthView.render(document.getElementById('auth'));
-      return false;
-    }
-    const profile = root.CloudSession.profile();
-    root.Store.load(await root.CloudSession.loadState());
-    root.Store.useRemote(root.CloudSession.saveState);
-    VIEWS = [...BASE_VIEWS, ...CLOUD_VIEWS, ...(profile.is_admin ? ADMIN_VIEWS : []), SETTINGS_VIEW];
-    document.getElementById('account').innerHTML = `<div class="account"><b>${root.ViewKit.esc(profile.display_name || user.email)}</b><span>${root.ViewKit.esc(user.email)}</span></div><button class="btn ghost" id="logout" style="padding:6px 0">Se déconnecter</button>`;
-    document.getElementById('logout').addEventListener('click', () => root.CloudSession.signOut());
-    document.getElementById('storage-note').textContent = 'Données enregistrées dans ton profil en ligne.';
-    return true;
+  /* Profil actif + accès au sélecteur de profils. */
+  function paintProfile() {
+    const p = root.ProfileRegistry.active();
+    const box = document.getElementById('account');
+    box.innerHTML = `<button class="profile-chip" id="profile-btn" title="Changer de profil"><span class="avatar">${root.ViewKit.esc(p.name.slice(0, 1).toUpperCase())}</span><span><b>${root.ViewKit.esc(p.name)}</b><small>Changer de profil</small></span></button>`;
+    box.querySelector('#profile-btn').addEventListener('click', () => root.ProfilePicker.open());
   }
 
   root.App = {
@@ -100,12 +92,9 @@
   };
 
   document.addEventListener('DOMContentLoaded', async () => {
-    try {
-      if (root.CloudConfig.enabled) { if (!(await startCloud())) return; } else root.Store.load();
-    } catch (e) {
-      document.getElementById('view').innerHTML = `<div class="notice">Connexion au service impossible : ${root.ViewKit.esc(e.message)}</div>`;
-      return;
-    }
+    root.Store.load();
+    paintProfile();
+    if (!root.MarketApi.live) document.getElementById('budget-link').hidden = true;  // Mon Budget ne tourne que sur le PC
     root.Store.subscribe(rerender);
     root.MarketApi.onStatus(paintStatus);
     root.MarketApi.quotes(root.Store.get().watchlist.slice(0, 1)).catch(() => null);

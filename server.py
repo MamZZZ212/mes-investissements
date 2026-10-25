@@ -79,10 +79,16 @@ def chart(symbol, rng):
 
 def quote(symbol):
     """Dernier cours + variation du jour + mini-historique 1 mois (pour les sparklines)."""
-    c = chart(symbol, "1mo")
+    return quote_from_chart(symbol, chart(symbol, "1mo"))
+
+
+def quote_from_chart(symbol, c, spark_points=None):
+    """Cotation déduite d'une série de cours (spark_points : ne garder que les N derniers points)."""
     if not c:
         return {"symbol": symbol, "error": "Symbole introuvable"}
     m, pts = c["meta"], c["points"]
+    if spark_points:
+        pts = pts[-spark_points:]
     price = m.get("regularMarketPrice")
     prev = pts[-2][1] if len(pts) >= 2 else m.get("chartPreviousClose")
     if pts and price is not None and abs(pts[-1][1] - price) / max(price, 1e-9) > 0.0001 and len(pts) >= 1:
