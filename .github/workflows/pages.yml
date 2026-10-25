@@ -40,6 +40,8 @@ jobs:
         run: |
           mkdir -p _site
           cp -r index.html css js data .nojekyll _site/
+          # Version unique par publication : les navigateurs rechargent CSS/JS au lieu de garder l'ancienne version.
+          sed -i -E 's#((href|src)="(css|js)/[^"]+\.(css|js))"#\1?v=${{ github.sha }}"#g' _site/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
