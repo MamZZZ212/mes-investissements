@@ -56,7 +56,7 @@ Adresse : **https://mamzzz212.github.io/mes-investissements/** (comme fit-tracke
 - **Documents** : relevés, PDF, images… rangés dans le navigateur pour le profil actif (10 Mo max par fichier). Les CSV s'importent en un clic.
 - **Passer du PC au téléphone** : Réglages → « Télécharger une sauvegarde » sur un appareil, puis « Restaurer » sur l'autre.
 - **Cours** : une tâche GitHub Actions (`.github/workflows/pages.yml`) les récupère toutes les ~20 min en semaine (une fois par jour le week-end), fondamentaux une fois par jour, puis republie le site. Seuls les titres de `market-symbols.json` (~100 ETF et actions) sont couverts en ligne : ajoute un symbole Yahoo Finance dans ce fichier pour le suivre. La version PC, elle, accède à tous les titres en direct.
-- Le lien budget ne fonctionne que sur le PC où Mon Budget tourne.
+- Lien budget : en ligne, il lit Mon Budget en ligne (https://mamzzz212.github.io/mon-budget/) sur le même appareil ; sur le PC, la version locale.
 
 ### Mettre à jour le site
 

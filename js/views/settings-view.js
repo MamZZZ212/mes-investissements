@@ -24,7 +24,7 @@
           <li>Fondamentaux : séries annuelles publiques Yahoo Finance (4 à 5 derniers exercices), mises en cache 12 h.</li>
           <li>Revolut et Boursobank : pas d’API publique pour les comptes-titres de particuliers → saisie manuelle ou import CSV.</li>
           <li>Version en ligne : seuls les titres listés dans market-symbols.json (≈ 100 ETF et actions) ont des cours ; la version PC accède à tous les titres.</li>
-          <li>Budget : lu depuis l’appli Mon Budget (localhost:5178) par une passerelle locale, rien ne sort de ton ordinateur.</li>
+          <li>Budget : lu depuis l’appli Mon Budget du même appareil (version PC ou version en ligne), directement dans le navigateur : rien n’est envoyé sur Internet.</li>
           <li>Aucun ordre de bourse n’est passé par l’application : tu restes seul décisionnaire.</li></ul></div>
       </div>${V.DISCLAIMER}`);
     el.querySelector('#export').addEventListener('click', download);

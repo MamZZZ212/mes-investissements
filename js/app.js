@@ -94,7 +94,7 @@
   document.addEventListener('DOMContentLoaded', async () => {
     root.Store.load();
     paintProfile();
-    if (!root.MarketApi.live) document.getElementById('budget-link').hidden = true;  // Mon Budget ne tourne que sur le PC
+    document.getElementById('budget-link').href = `${root.BudgetLink.BUDGET_URL}/`;
     root.Store.subscribe(rerender);
     root.MarketApi.onStatus(paintStatus);
     root.MarketApi.quotes(root.Store.get().watchlist.slice(0, 1)).catch(() => null);

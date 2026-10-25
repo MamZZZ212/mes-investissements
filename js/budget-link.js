@@ -1,7 +1,9 @@
-/* Lien avec l'appli « Mon Budget » (http://localhost:5178) : une page passerelle chargée en iframe invisible
-   lit les données budget dans son propre navigateur local et nous envoie un résumé (revenus, dépenses, épargne). */
+/* Lien avec l'appli « Mon Budget » : une page passerelle chargée en iframe invisible lit les données budget
+   dans le navigateur et nous envoie un résumé (revenus, dépenses, épargne).
+   Sur le PC : Mon Budget local (localhost:5178). En ligne : Mon Budget sur GitHub Pages (même origine). */
 (function (root) {
-  const BUDGET_ORIGIN = 'http://localhost:5178';
+  const BUDGET_URL = location.port === '5179' ? 'http://localhost:5178' : 'https://mamzzz212.github.io/mon-budget';
+  const BUDGET_ORIGIN = new URL(BUDGET_URL).origin;
   const TIMEOUT = 5000;
 
   function fetchSummary() {
@@ -21,7 +23,7 @@
       };
       const timer = setTimeout(() => done(null), TIMEOUT);
       window.addEventListener('message', onMessage);
-      frame.src = `${BUDGET_ORIGIN}/bridge.html?origin=${encodeURIComponent(location.origin)}`;
+      frame.src = `${BUDGET_URL}/bridge.html?origin=${encodeURIComponent(location.origin)}`;
       document.body.appendChild(frame);
     });
   }
@@ -33,5 +35,5 @@
     return summary;
   }
 
-  root.BudgetLink = { sync, BUDGET_ORIGIN };
+  root.BudgetLink = { sync, BUDGET_URL };
 })(window);

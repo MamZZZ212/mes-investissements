@@ -29,7 +29,7 @@
   async function render(el, ctx) {
     const state = ctx.state;
     const token = V.mount(el, `<div class="page-head"><div><h1>Lien avec Mon Budget</h1><p>Ton appli budget fournit tes revenus, dépenses et capacité d’épargne : l’investissement part de là.</p></div>
-      <div class="row"><a class="btn" href="${BudgetLink.BUDGET_ORIGIN}" target="_blank" rel="noopener">${icon('external')}Ouvrir Mon Budget</a><button class="btn primary" id="sync">${icon('refresh')}Synchroniser</button></div></div>
+      <div class="row"><a class="btn" href="${BudgetLink.BUDGET_URL}/" target="_blank" rel="noopener">${icon('external')}Ouvrir Mon Budget</a><button class="btn primary" id="sync">${icon('refresh')}Synchroniser</button></div></div>
       <div id="status" class="notice info">Connexion à Mon Budget…</div><div id="bfig" class="mt"></div>${V.DISCLAIMER}`);
     const paint = (b, live) => {
       if (!V.alive(el, token)) return;
@@ -40,7 +40,7 @@
         el.querySelector('#bfig').innerHTML = figures(b, state, Strategy.emergencyTarget(state.strategy, b));
       } else {
         st.className = 'notice';
-        st.innerHTML = live ? 'Mon Budget est lancé mais ne contient pas encore de relevé.' : (!MarketApi.live ? 'Mon Budget ne répond pas. Le lien budget ne marche que depuis le PC où Mon Budget tourne (démarrage automatique) ; sur téléphone, saisis ton montant mensuel dans Plan mensuel.' : 'Mon Budget ne répond pas. Lance « Ouvrir-Investissements.bat » (il démarre les deux applis) ou « Ouvrir-Mon-Budget.bat », puis clique sur Synchroniser.');
+        st.innerHTML = live ? (MarketApi.live ? 'Mon Budget est lancé mais ne contient pas encore de relevé.' : 'Mon Budget en ligne ne contient pas encore de relevé sur cet appareil : ouvre-le et importe tes relevés BNP (ou restaure une sauvegarde de la version PC).') : (!MarketApi.live ? 'Mon Budget en ligne ne répond pas : vérifie ta connexion, puis clique sur Synchroniser.' : 'Mon Budget ne répond pas. Lance « Ouvrir-Investissements.bat » (il démarre les deux applis) ou « Ouvrir-Mon-Budget.bat », puis clique sur Synchroniser.');
       }
     };
     const sync = async () => { const b = await BudgetLink.sync(); paint(b ? { ...b, syncedAt: Date.now() } : state.budget, !!b); };
