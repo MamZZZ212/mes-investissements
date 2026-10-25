@@ -114,3 +114,4 @@ input[type="email"], input[type="password"] { padding: 8px 10px; border: 1px sol
 .avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; display: inline-grid; place-items: center; font-weight: 700; font-size: 13px; flex: none; }
 @media (max-width: 860px) { .sidebar-foot { display: block; position: static; } .sidebar-foot > *:not(#account) { display: none; } #account { flex: none; } .profile-chip { margin: 0; padding: 4px 8px 4px 4px; width: auto; } .profile-chip small { display: none; } }
 @media (max-width: 560px) { .spark, .range52 { display: none; } .sym span { max-width: 150px; } td, th { padding: 8px 6px; } }
+@media (max-width: 560px) { .watch-table th:nth-child(2), .watch-table td:nth-child(2), .watch-table th:nth-child(5), .watch-table td:nth-child(5) { display: none; } }

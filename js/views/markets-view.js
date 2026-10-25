@@ -19,7 +19,7 @@
     return groups.map(([label, test]) => {
       const list = state.watchlist.filter((s) => test(quotes[s]));
       if (!list.length) return '';
-      return `<div class="card mt"><div class="card-head"><h2>${label}</h2><span class="small">${list.length} titre(s)</span></div><div class="table-wrap"><table>
+      return `<div class="card mt"><div class="card-head"><h2>${label}</h2><span class="small">${list.length} titre(s)</span></div><div class="table-wrap"><table class="watch-table">
         <thead><tr><th>Titre</th><th>1 mois</th><th class="amt">Cours</th><th class="amt">Jour</th><th>52 semaines</th><th>${label === 'ETF' ? 'PEA' : 'Filtre Buffett'}</th><th></th></tr></thead>
         <tbody>${list.map((s) => watchRow(quotes[s], s, state)).join('')}</tbody></table></div></div>`;
     }).join('');
