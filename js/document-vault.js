@@ -1,4 +1,5 @@
-/* Coffre à documents du profil actif, conservé dans ce navigateur (IndexedDB) : rien n'est envoyé en ligne. */
+/* Coffre à documents du profil actif, conservé dans ce navigateur (IndexedDB) : rien n'est envoyé en ligne.
+   Fichier identique dans Mes Investissements et Mon Budget : en ligne, les deux sites partagent le même coffre. */
 (function (root) {
   const DB_NAME = 'invest-docs';
   const STORE = 'files';
@@ -51,10 +52,17 @@
 
   const remove = (id) => run('readwrite', (s) => s.delete(id));
 
+  /* Le profil a-t-il déjà ce fichier (même nom, même taille) ? Évite les doublons lors des imports. */
+  async function has(file) {
+    return (await list()).some((d) => d.label === file.name && d.size === file.size);
+  }
+
   async function removeProfile(profile) {
     const ids = await run('readonly', (s) => s.index('profile').getAllKeys(profile));
     for (const id of ids) await remove(id);
   }
 
-  root.DocumentVault = { list, upload, readText, link, remove, removeProfile, MAX_BYTES };
+  const readBytes = async (id) => new Uint8Array(await (await get(id)).blob.arrayBuffer());
+
+  root.DocumentVault = { list, upload, readText, readBytes, link, remove, removeProfile, has, MAX_BYTES };
 })(window);

@@ -23,7 +23,7 @@
       };
       const timer = setTimeout(() => done(null), TIMEOUT);
       window.addEventListener('message', onMessage);
-      frame.src = `${BUDGET_URL}/bridge.html?origin=${encodeURIComponent(location.origin)}`;
+      frame.src = `${BUDGET_URL}/bridge.html?origin=${encodeURIComponent(location.origin)}&profile=${encodeURIComponent(ProfileRegistry.active().id)}`;
       document.body.appendChild(frame);
     });
   }
